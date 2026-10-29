@@ -18,8 +18,6 @@ class MiniGit:
     )
 
     def __init__(self):
-        # Inicia o repositorio vazio, com a branch main.
-        # Custo: 0 passos.
         self.__pais = {}
         self.__mensagens = {}
         self.__branches = {"main": None}
@@ -29,19 +27,13 @@ class MiniGit:
 
     @property
     def passos(self):
-        # Devolve os passos da ultima operacao.
-        # Custo: 0 passos.
         return self.__passos
 
     @property
     def branch_atual(self):
-        # Devolve o nome da branch selecionada.
-        # Custo: 0 passos.
         return self.__branch_atual
 
     def commitar(self, mensagem):
-        # Cria um commit e move o ponteiro da branch atual.
-        # Custo: 2 passos.
         if not mensagem:
             self.__passos = 0
             raise ValueError("A mensagem nao pode ser vazia")
@@ -65,8 +57,6 @@ class MiniGit:
         return identificador
 
     def mensagem(self, commit):
-        # Busca a mensagem diretamente pela chave do dicionario.
-        # Custo: 1 passo.
         self.__passos = 1
 
         if commit not in self.__mensagens:
@@ -75,8 +65,6 @@ class MiniGit:
         return self.__mensagens[commit]
 
     def pais(self, commit):
-        # Devolve os pais como tupla para proteger a lista interna.
-        # Custo: 1 passo.
         self.__passos = 1
 
         if commit not in self.__pais:
@@ -85,9 +73,10 @@ class MiniGit:
         return tuple(self.__pais[commit])
 
     def criar_branch(self, nome):
-        # Cria uma branch apontando para o commit atual.
-        # Custo: 1 passo.
         self.__passos = 0
+
+        if not nome:
+            raise ValueError("O nome da branch nao pode ser vazio")
 
         if nome in self.__branches:
             raise ValueError("Essa branch ja existe")
@@ -101,8 +90,6 @@ class MiniGit:
         self.__passos = 1
 
     def trocar_branch(self, nome):
-        # Seleciona outra branch existente.
-        # Custo: 1 passo.
         self.__passos = 0
 
         if nome not in self.__branches:
@@ -112,8 +99,6 @@ class MiniGit:
         self.__passos = 1
 
     def mesclar(self, nome):
-        # Cria um commit com dois pais e move o ponteiro.
-        # Custo: 2 passos.
         self.__passos = 0
 
         if nome not in self.__branches:
@@ -141,8 +126,6 @@ class MiniGit:
         return identificador
 
     def log(self):
-        # Percorre os commits alcancaveis usando uma fila.
-        # Cada commit diferente visitado custa 1 passo.
         self.__passos = 0
 
         commit_inicial = self.__branches[self.__branch_atual]
@@ -172,8 +155,6 @@ class MiniGit:
         return tuple(resultado)
 
     def buscar(self, texto):
-        # Procura o texto nas mensagens pela ordem de criacao.
-        # Custo: 1 passo por mensagem consultada.
         self.__passos = 0
 
         for identificador in self.__mensagens:
@@ -185,10 +166,7 @@ class MiniGit:
         return None
 
     def merges(self):
-        # Localiza commits que possuem mais de um pai.
-        # Custo: 1 passo por commit existente.
         self.__passos = 0
-
         resultado = []
 
         for identificador in self.__pais:
@@ -201,7 +179,6 @@ class MiniGit:
 
 
 def tentar(acao):
-    # Executa uma operacao e mostra erros esperados.
     try:
         acao()
     except ValueError as erro:
@@ -209,7 +186,6 @@ def tentar(acao):
 
 
 def medir(quantidade):
-    # Mede os passos de escrita e leitura.
     git = MiniGit()
 
     for numero in range(quantidade):
@@ -258,6 +234,7 @@ tentar(lambda: git.trocar_branch("inexistente"))
 tentar(lambda: git.criar_branch("main"))
 tentar(lambda: git.mesclar("main"))
 tentar(lambda: git.pais("c99"))
+tentar(lambda: git.criar_branch(""))
 
 
 # MEDICAO DE LEITURA E ESCRITA
