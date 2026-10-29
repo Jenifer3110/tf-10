@@ -1,49 +1,77 @@
+
 # MiniGit - Estrutura de Dados
 
-## Apresentação
+## Apresentacao
 
-Este projeto foi desenvolvido para colocar em prática os conhecimentos de estruturas de dados utilizando Python. O MiniGit simula algumas funções básicas do Git, trabalhando com commits, branches, histórico e merge.
+Este projeto foi desenvolvido para colocar em pratica os conhecimentos de estruturas de dados utilizando Python.
 
-Foram utilizados dicionários, listas, tuplas e filas para armazenar e consultar as informações.
+O MiniGit simula algumas funcionalidades basicas do Git, trabalhando com commits, branches, historico e merge.
+
+Foram utilizados dicionarios, listas, tuplas e filas para armazenar e consultar as informacoes.
 
 ## Funcionalidades
 
-- Criar commits com identificadores automáticos.
+- Criar commits com identificadores automaticos.
 - Consultar mensagens dos commits.
 - Consultar os pais de cada commit.
 - Criar e trocar branches.
 - Realizar merge entre branches.
-- Consultar o histórico com log.
+- Consultar o historico com log.
 - Buscar palavras nas mensagens.
 - Identificar commits de merge.
-- Contabilizar os passos das operações.
+- Contabilizar os passos das operacoes.
+- Validar nomes de branches antes da criacao.
 
-## Tabela de medição
+## Estruturas de dados utilizadas
+
+- **Dicionarios:** armazenam commits, mensagens e branches.
+- **Listas:** armazenam os pais de cada commit.
+- **Tuplas:** retornam os pais e os resultados das consultas sem permitir alteracoes na estrutura original.
+- **Fila:** utilizada na consulta do historico com a operacao log.
+
+## Tabela de medicao
 
 | Quantidade de commits | Passos do commitar | Passos do log |
-|---|---:|---:|
+|---:|---:|---:|
 | 10 | 2 | 10 |
 | 100 | 2 | 100 |
 | 1000 | 2 | 1000 |
 
-## Respostas das questões
+## Respostas das questoes
 
-### 1. Por que o commitar gasta sempre 2 passos, e o log gasta mais conforme o histórico cresce?
+**1. Qual a diferenca entre commitar e log em relacao ao custo?**
 
-O commitar realiza apenas duas ações: criar o commit e atualizar o ponteiro da branch atual. O log precisa percorrer os commits existentes para encontrar todo o histórico, por isso o número de passos aumenta conforme a quantidade de commits cresce.
+A operacao commitar possui custo constante, pois realiza uma quantidade fixa de operacoes para criar o commit e atualizar o ponteiro da branch. Ja a operacao log percorre os commits alcancaveis, fazendo com que seu custo aumente conforme a quantidade de commits.
 
-### 2. Por que mensagem(commit) gasta 1 passo e buscar(texto) pode gastar muitos?
+**2. Qual a diferenca entre mensagem e buscar?**
 
-A mensagem utiliza o identificador como chave do dicionário, permitindo encontrar o conteúdo diretamente. Já a busca por texto precisa verificar as mensagens uma por uma, porque o dicionário não oferece uma procura direta pelo valor armazenado.
+A operacao mensagem consulta diretamente um commit pelo identificador, utilizando um dicionario. A operacao buscar percorre as mensagens ate encontrar o texto informado.
 
-### 3. Por que o merge é um commit com dois pais, e por que isso faz do histórico um grafo, e não uma lista?
+**3. Como funciona o merge?**
 
-O merge une duas branches e precisa guardar os dois commits de origem como pais. Dessa maneira, o histórico pode ter diferentes caminhos e ligações entre commits, formando um grafo em vez de uma sequência única como acontece em uma lista.
+O merge cria um novo commit que possui dois pais, representando a uniao do historico de duas branches. Assim, o historico pode formar um grafo com diferentes caminhos.
 
-### 4. Por que o método pais devolve uma tupla, e não a lista que está guardada dentro do dicionário?
+**4. Por que utilizar tuplas na operacao pais?**
 
-A tupla protege as informações internas da classe, pois não permite alterações nos pais por quem chama o método. Assim, o histórico permanece protegido contra modificações externas.
+As tuplas permitem retornar os pais de um commit sem disponibilizar a lista interna para modificacoes externas, protegendo os dados do MiniGit.
 
-## Conclusão
+## Testes e validacoes
 
-A realização deste projeto ajudou a compreender melhor o funcionamento das estruturas de dados e a diferença entre os custos de leitura e escrita. Também foi possível entender como o Git organiza seus commits, branches e merges por meio de um grafo.
+Foram realizados testes para verificar:
+
+- Criacao e consulta de commits.
+- Criacao e troca de branches.
+- Merge entre branches.
+- Consulta do historico.
+- Busca de mensagens.
+- Identificacao de commits de merge.
+- Tentativas de operacoes invalidas.
+- Tentativa de criar uma branch com nome vazio.
+
+Quando uma operacao invalida e executada, o programa apresenta uma mensagem de erro.
+
+## Conclusao
+
+O desenvolvimento do MiniGit permitiu praticar o uso de diferentes estruturas de dados em Python e compreender como funciona a organizacao de historicos de commits, branches e merges.
+
+Tambem foi possivel observar a diferenca de custo entre operacoes de escrita e leitura por meio da contagem de passos.
